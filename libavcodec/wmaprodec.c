@@ -1802,6 +1802,42 @@ static int xma_decode_packet(AVCodecContext *avctx, void *data,
     AVFrame *frame = data;
     int i, ret, offset = INT_MAX;
 
+    /* find the owner stream of the new XMA packet that belongs to on of our streams
+     * XMA streams find their packets following packet_skips
+     * there may be other packets in between if we are not responsible for all streams
+     * (at start there is one packet per stream, then interleave non-linearly). */
+    if (s->xma[s->current_stream].packet_done ||
+        s->xma[s->current_stream].packet_loss) {
+        /* select stream with lowest skip_packets (= uses next packet) */
+        if (s->xma[s->current_stream].skip_packets != 0) {
+            int min[2];
+
+            min[0] = s->xma[0].skip_packets;
+            min[1] = i = 0;
+
+            for (i = 1; i < s->num_streams; i++) {
+                if (s->xma[i].skip_packets < min[0]) {
+                    min[0] = s->xma[i].skip_packets;
+                    min[1] = i;
+                }
+            }
+
+            s->current_stream = min[1];
+        }
+
+        int skip_this = !!s->xma[s->current_stream].skip_packets;
+
+        /* advance all stream packet skip counts */
+        for (i = 0; i < s->num_streams; i++) {
+            s->xma[i].skip_packets = FFMAX(0, s->xma[i].skip_packets - 1);
+        }
+
+        /* if we are not responsible for every stream, make sure we ignore
+         * XMA packets not belonging to one of our streams */
+        if (skip_this)
+            return avctx->block_align;
+    }
+
     if (!s->frames[s->current_stream]->data[0]) {
         s->frames[s->current_stream]->nb_samples = 512;
         if ((ret = ff_get_buffer(avctx, s->frames[s->current_stream], 0)) < 0) {
@@ -1832,34 +1868,8 @@ static int xma_decode_packet(AVCodecContext *avctx, void *data,
         return ret;
     }
 
-    /* find next XMA packet's owner stream, and update.
-     * XMA streams find their packets following packet_skips
-     * (at start there is one packet per stream, then interleave non-linearly). */
     if (s->xma[s->current_stream].packet_done ||
         s->xma[s->current_stream].packet_loss) {
-
-        /* select stream with 0 skip_packets (= uses next packet) */
-        if (s->xma[s->current_stream].skip_packets != 0) {
-            int min[2];
-
-            min[0] = s->xma[0].skip_packets;
-            min[1] = i = 0;
-
-            for (i = 1; i < s->num_streams; i++) {
-                if (s->xma[i].skip_packets < min[0]) {
-                    min[0] = s->xma[i].skip_packets;
-                    min[1] = i;
-                }
-            }
-
-            s->current_stream = min[1];
-        }
-
-        /* all other streams skip next packet */
-        for (i = 0; i < s->num_streams; i++) {
-            s->xma[i].skip_packets = FFMAX(0, s->xma[i].skip_packets - 1);
-        }
-
         /* copy samples from buffer to output if possible */
         for (i = 0; i < s->num_streams; i++) {
             offset = FFMIN(offset, s->offset[i]);
