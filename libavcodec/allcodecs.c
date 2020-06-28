@@ -519,6 +519,7 @@ extern AVCodec ff_wmavoice_decoder;
 extern AVCodec ff_ws_snd1_decoder;
 extern AVCodec ff_xma1_decoder;
 extern AVCodec ff_xma2_decoder;
+extern AVCodec ff_xmaframes_decoder;
 
 /* PCM codecs */
 extern AVCodec ff_pcm_alaw_encoder;
