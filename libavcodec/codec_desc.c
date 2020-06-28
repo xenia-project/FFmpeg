@@ -3119,6 +3119,13 @@ static const AVCodecDescriptor codec_descriptors[] = {
         .props     = AV_CODEC_PROP_INTRA_ONLY | AV_CODEC_PROP_LOSSY,
     },
     {
+        .id        = AV_CODEC_ID_XMAFRAMES,
+        .type      = AVMEDIA_TYPE_AUDIO,
+        .name      = "xmaframes",
+        .long_name = NULL_IF_CONFIG_SMALL("Xbox Media Audio raw frames"),
+        .props     = AV_CODEC_PROP_INTRA_ONLY | AV_CODEC_PROP_LOSSY,
+    },
+    {
         .id        = AV_CODEC_ID_DST,
         .type      = AVMEDIA_TYPE_AUDIO,
         .name      = "dst",
