@@ -2,8 +2,9 @@ Xenia version of FFmpeg
 =======================
 
 * If you want to update FFmpeg, make changes to the configs and/or modify the premake files/generator please use a rebase strategy.
-* Do not change the config headers directly but only use the `./configure` script (use rebase to get to point where they where originally generated so the script can run successfully, then amend).
+* Do not change the config headers directly but only use the `./configure` script (use `fixup`/`ammend` on the original commit when rebasing).
 The old command line options used are at the top of the config headers.
+For Linux, run the configure command on a minimal system installation (i.e. in a docker container), because your development machine may have additional headers/libs that will be discovered.
 * After changing the FFmpeg version and/or configure options, run the `generate_premake.py` script and `fixup`/`ammend` the changes into the `Generate premake files` commit.
 
 FFmpeg README
