@@ -14,75 +14,12 @@ project("{}")
 """
 
 templates = {}
-templates['libavutil'] = template_header.format('libavutil', '19216035-F781-4F15-B009-213B7E3A18AC') + """
-  filter("platforms:Windows")
-    buildoptions({
-      "/wd4018", -- signed/unsigned mismatch
-      "/wd4028", -- formal parameter 3 different from declaration
-      "/wd4090", -- different const qualifiers
-      "/wd4101", -- unreferenced local variable
-      "/wd4133", -- incompatible types
-      "/wd4146", -- unary minus operator applied to unsigned type, result still unsigned
-      "/wd4244", -- conversion 'x' to 'x', possible loss of data
-      "/wd4267", -- 'initializing': conversion from 'x' to 'x', possible loss of data
-      "/wd4305", -- 'initializing': truncation from 'x' to 'x'
-      "/wd4333", -- right shift by too large amount, data loss
-      "/wd4554", -- check operator precedence for possible error
-    })
-  filter("platforms:Linux")
-    buildoptions({
-      "-Wno-error=implicit-const-int-float-conversion",
-      "-Wno-error=incompatible-pointer-types-discards-qualifiers",
-      "-Wno-error=switch",
-      "-Wno-error=incompatible-pointer-types",
-      "-Wno-error=logical-op-parentheses",
-      "-Wno-error=pointer-sign",
-      "-Wno-error=parentheses",
-      "-Wno-error=string-plus-int",
-      "-Wno-error=tautological-constant-out-of-range-compare",
-    })
-  filter {}
-
-"""
+templates['libavutil'] = template_header.format('libavutil', '19216035-F781-4F15-B009-213B7E3A18AC')
 
 templates['libavcodec'] =  template_header.format('libavcodec', '9DB2830C-D326-48ED-B4CC-08EA6A1B7272') + """
-  filter("platforms:Windows")
-    buildoptions({
-      "/wd4003", --	not enough arguments for function-like macro invocation
-      "/wd4013", -- undefined; assuming extern returning int
-      "/wd4018", -- signed/unsigned mismatch
-      "/wd4028", -- formal parameter 3 different from declaration
-      "/wd4047", -- 'initializing': 'x' differs in levels of indirection from 'x'
-      "/wd4087",
-      "/wd4089", -- different types in actual parameter x, formal parameter x
-      "/wd4090", -- different const qualifiers
-      "/wd4101", -- unreferenced local variable
-      "/wd4113",
-      "/wd4133", -- incompatible types
-      "/wd4146", -- unary minus operator applied to unsigned type, result still unsigned
-      "/wd4244", -- conversion 'x' to 'x', possible loss of data
-      "/wd4267", -- 'initializing': conversion from 'x' to 'x', possible loss of data
-      "/wd4305", -- 'initializing': truncation from 'x' to 'x'
-      "/wd4334", -- result of 32-bit shift implicitly converted to 64 bits
-      "/wd4554", -- check operator precedence for possible error
-      "/wd4996", -- was declared deprecated
-    })
-  filter("platforms:Linux")
-    buildoptions({
-      "-Wno-error=implicit-const-int-float-conversion",
-      "-Wno-error=incompatible-pointer-types-discards-qualifiers",
-      "-Wno-error=switch",
-      "-Wno-error=incompatible-pointer-types",
-      "-Wno-error=pointer-sign",
-      "-Wno-error=parentheses",
-      "-Wno-error=string-plus-int",
-      "-Wno-error=deprecated-declarations",
-    })
-  filter {}
   links({
     "libavutil",
   })
-
 """
 
 # gets the config defines from the generated header
@@ -235,7 +172,6 @@ def generate_premake(conf, libname):
     ]
     with open(os.path.join(libname, 'premake5.lua'), 'w') as premake:
         premake.write(templates[libname])
-        files = []
         for makefile in makefiles:
             m = parse_makefile(makefile, conf)
             file_blocks = [
