@@ -8,35 +8,6 @@ project("libavutil")
   kind("StaticLib")
   language("C")
   ffmpeg_common()
-
-  filter("platforms:Windows")
-    buildoptions({
-      "/wd4018", -- signed/unsigned mismatch
-      "/wd4028", -- formal parameter 3 different from declaration
-      "/wd4090", -- different const qualifiers
-      "/wd4101", -- unreferenced local variable
-      "/wd4133", -- incompatible types
-      "/wd4146", -- unary minus operator applied to unsigned type, result still unsigned
-      "/wd4244", -- conversion 'x' to 'x', possible loss of data
-      "/wd4267", -- 'initializing': conversion from 'x' to 'x', possible loss of data
-      "/wd4305", -- 'initializing': truncation from 'x' to 'x'
-      "/wd4333", -- right shift by too large amount, data loss
-      "/wd4554", -- check operator precedence for possible error
-    })
-  filter("platforms:Linux")
-    buildoptions({
-      "-Wno-error=implicit-const-int-float-conversion",
-      "-Wno-error=incompatible-pointer-types-discards-qualifiers",
-      "-Wno-error=switch",
-      "-Wno-error=incompatible-pointer-types",
-      "-Wno-error=logical-op-parentheses",
-      "-Wno-error=pointer-sign",
-      "-Wno-error=parentheses",
-      "-Wno-error=string-plus-int",
-      "-Wno-error=tautological-constant-out-of-range-compare",
-    })
-  filter {}
-
   -- libavutil/Makefile:
   --   HEADERS:
   files({
