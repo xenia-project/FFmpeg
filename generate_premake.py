@@ -11,6 +11,10 @@ project("{}")
   kind("StaticLib")
   language("C")
   ffmpeg_common()
+
+  filter("files:not wmaprodec.c")
+    warnings "Off"
+  filter({{}})
 """
 
 templates = {}
