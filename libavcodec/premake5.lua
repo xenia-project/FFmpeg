@@ -9,9 +9,14 @@ project("libavcodec")
   language("C")
   ffmpeg_common()
 
+  filter("files:not wmaprodec.c")
+    warnings "Off"
+  filter({})
+
   links({
     "libavutil",
   })
+
   -- libavcodec/Makefile:
   --   HEADERS:
   files({
@@ -40,7 +45,6 @@ project("libavcodec")
     "vorbis_parser.h",
     "xvmc.h",
   })
-  -- libavcodec/Makefile:
   --   OBJS:
   files({
     "ac3_parser.c",
@@ -75,10 +79,6 @@ project("libavcodec")
     "utils.c",
     "vorbis_parser.c",
     "xiph.c",
-  })
-  -- libavcodec/Makefile:
-  --   OBJS-yes:
-  files({
     "faandct.c",
     "faanidct.c",
     "fdctdsp.c",
@@ -94,11 +94,7 @@ project("libavcodec")
     "wmaprodec.c",
     "wma.c",
     "wma_common.c",
-    "wmaprodec.c",
-    "wma.c",
-    "wma_common.c",
     "null_bsf.c",
-    "file_open.c",
     "pthread.c",
     "pthread_slice.c",
     "pthread_frame.c",
@@ -107,26 +103,42 @@ project("libavcodec")
     "fft_fixed_32.c",
     "fft_init_table.c",
   })
+  filter({"platforms:Windows"})
+  files({
+    "file_open.c",
+  })
+  filter({})
+
   -- libavcodec/aarch64/Makefile:
-  --   OBJS-yes:
+  --   OBJS:
+  filter({"platforms:Android_ARM64"})
   files({
     "aarch64/fft_init_aarch64.c",
     "aarch64/idctdsp_init_aarch64.c",
   })
+  filter({})
+  --   NEON-OBJS:
+  filter({"platforms:Android_ARM64"})
+  files({
+    "aarch64/fft_neon.S",
+    "aarch64/simple_idct_neon.S",
+    "aarch64/mdct_neon.S",
+  })
+  filter({})
+
   -- libavcodec/x86/Makefile:
   --   OBJS:
+  filter({"platforms:Android_x86_64 or platforms:Linux or platforms:Windows"})
   files({
     "x86/constants.c",
-  })
-  -- libavcodec/x86/Makefile:
-  --   OBJS-yes:
-  files({
     "x86/fdctdsp_init.c",
     "x86/fft_init.c",
     "x86/idctdsp_init.c",
   })
-  -- libavcodec/x86/Makefile:
-  --   MMX-OBJS-yes:
+  filter({})
+  --   MMX-OBJS:
+  filter({"platforms:Android_x86_64 or platforms:Linux or platforms:Windows"})
   files({
     "x86/fdct.c",
   })
+  filter({})
