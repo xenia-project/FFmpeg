@@ -128,7 +128,7 @@ project("libavcodec")
 
   -- libavcodec/x86/Makefile:
   --   OBJS:
-  filter({"platforms:Android_x86_64 or platforms:Linux or platforms:Windows"})
+  filter({"platforms:Android_x86_64 or platforms:Linux or platforms:Mac or platforms:Windows"})
   files({
     "x86/constants.c",
     "x86/fdctdsp_init.c",
@@ -137,7 +137,7 @@ project("libavcodec")
   })
   filter({})
   --   MMX-OBJS:
-  filter({"platforms:Android_x86_64 or platforms:Linux or platforms:Windows"})
+  filter({"platforms:Android_x86_64 or platforms:Linux or platforms:Mac or platforms:Windows"})
   files({
     "x86/fdct.c",
   })
