@@ -36,6 +36,7 @@ class Config():
 supported_configs = [
     Config('windows', 'x86_64' , 'config_windows_x86_64.h' , 'platforms:Windows'),
     Config('linux'  , 'x86_64' , 'config_linux_x86_64.h'   , 'platforms:Linux'),
+    Config('macosx' , 'x86_64' , 'config_macosx_x86_64.h'  , 'platforms:Mac'),
     Config('android', 'x86_64' , 'config_android_x86_64.h' , 'platforms:Android_x86_64'),
     Config('android', 'aarch64', 'config_android_aarch64.h', 'platforms:Android_ARM64'),
 ]
