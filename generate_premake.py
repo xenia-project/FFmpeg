@@ -34,7 +34,8 @@ class Config():
         self.key_values = []
 
 supported_configs = [
-    Config('windows', 'x86_64' , 'config_windows_x86_64.h' , 'platforms:Windows'),
+    Config('windows', 'x86_64' , 'config_windows_x86_64.h' , 'platforms:Windows-x86_64'),
+    Config('windows', 'aarch64', 'config_windows_aarch64.h', 'platforms:Windows-ARM64'),
     Config('linux'  , 'x86_64' , 'config_linux_x86_64.h'   , 'platforms:Linux'),
     Config('android', 'x86_64' , 'config_android_x86_64.h' , 'platforms:Android-x86_64'),
     Config('android', 'aarch64', 'config_android_aarch64.h', 'platforms:Android-ARM64'),

@@ -195,7 +195,7 @@ project("libavutil")
 
   -- libavutil/aarch64/Makefile:
   --   OBJS:
-  filter({"platforms:Android-ARM64"})
+  filter({"platforms:Android-ARM64 or platforms:Windows-ARM64"})
   files({
     "aarch64/cpu.c",
     "aarch64/float_dsp_init.c",
@@ -210,7 +210,7 @@ project("libavutil")
 
   -- libavutil/x86/Makefile:
   --   OBJS:
-  filter({"platforms:Android-x86_64 or platforms:Linux or platforms:Windows"})
+  filter({"platforms:Android-x86_64 or platforms:Linux or platforms:Windows-x86_64"})
   files({
     "x86/cpu.c",
     "x86/fixed_dsp_init.c",
